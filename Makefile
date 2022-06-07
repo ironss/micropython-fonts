@@ -2,7 +2,7 @@ PYFONT_DIR = pyfonts
 EXAMPLE_DIR = examples
 
 FONT_TO_PY_DIR = ../micropython-font-to-py
-FONT_TO_PY = .venv/bin/python $(FONT_TO_PY_DIR)/font_to_py.py
+FONT_TO_PY = .venv/bin/python $(FONT_TO_PY_DIR)/font_to_py.py --iterate
 
 
 varfont_sizes += 10
@@ -26,13 +26,13 @@ all_pyfont_examples = $(foreach pyfont,$(all_pyfont_files),$(patsubst $(PYFONT_D
 
 pyfont-examples:
 
-pyfonts: $(all_pyfont_files)
+pyfonts: venvpy $(all_pyfont_files)
 	@echo $(all_pyfont_files)
-.PHONY:pyfonts
+.PHONY: pyfonts
 
-pyfont-examples: $(all_pyfont_examples)
+pyfont-examples: venvpy $(all_pyfont_examples)
 	@echo $(all_pyfont_examples)
-.PHONY:pyfont-examples
+.PHONY: pyfont-examples
 
 
 .py: .ttf
@@ -65,4 +65,28 @@ $(EXAMPLE_DIR)/%-example.png: $(PYFONT_DIR)/%.py create-font-sample.py
 clean:
 	-rm -rf $(PYFONT_DIR)/*
 	-rm -rf $(EXAMPLE_DIR)/*
-	
+.PHONY: clean
+
+
+
+VENVPY_DIR = $(PWD)/.venv
+VENVPY_PYTHON3 = $(VENVPY_DIR)/bin/python3
+VENVPY_PIP3 = $(VENVPY_DIR)/bin/pip3
+VENVPY_PYLINT = $(VENVPY_DIR)/bin/pylint
+VENVPY_PYTEST = $(VENVPY_PYTHON3) -m pytest
+VENVPY_PYTEST_COV = $(VENVPY_PYTEST) --cov-config=$(PWD)/_coveragerc  --cov-report html:$(PWD)/_build/test/$@ --cov=. 
+
+venvpy: $(VENVPY_DIR)/.done
+.PHONY: venvpy
+
+venvpy-uninstall:
+	-rm -rf $(VENVPY_DIR)
+.PHONY: venvpy-uninstall
+
+$(VENVPY_DIR)/.done: pip-requirements.txt $(VENVPY_PIP3)
+	$(VENVPY_PIP3) install -r pip-requirements.txt
+	ln -fs $(VENVPY_DIR)/bin/pyserial-miniterm $(VENVPY_DIR)/bin/miniterm
+	touch $@
+
+$(VENVPY_PIP3):
+	python3 -m venv $(VENVPY_DIR)

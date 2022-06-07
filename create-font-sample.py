@@ -9,18 +9,15 @@ def create_font_sample(font, px_size, px_space):
     c = 0
     bitmaps = []
     rbitmaps = []
-    for ccode in range(32, 65536):
-        glyph = font.get_glyph_index(chr(ccode))
-        if glyph:
-            rbitmaps.append(ccode)
-#            print(r, c, ccode, hex(ccode), chr(ccode))
-            c += 1
-            if c == 16:
-                if len(rbitmaps):
-                    bitmaps.append(rbitmaps)
-                rbitmaps = []
-                r += 1
-                c = 0
+    for ch, glyph in font.glyphs():
+        rbitmaps.append((ch, glyph))
+        c += 1
+        if c == 16:
+            if len(rbitmaps):
+                bitmaps.append(rbitmaps)
+            rbitmaps = []
+            r += 1
+            c = 0
 
     if len(rbitmaps):
         bitmaps.append(rbitmaps)
@@ -31,9 +28,7 @@ def create_font_sample(font, px_size, px_space):
 
     for r in range(len(bitmaps)):
         rbitmaps = bitmaps[r]
-        for c in range(len(rbitmaps)):
-            ccode = rbitmaps[c]
-            ch_bitmap, ch_height, ch_width = font.get_ch(chr(ccode))
+        for c, (ch, (ch_bitmap, ch_height, ch_width)) in enumerate(rbitmaps):
 #            print(r, c, ccode, hex(ccode), chr(ccode))
 
             o = ''
@@ -73,4 +68,3 @@ if __name__ == '__main__':
     
     im = create_font_sample(pyf_m, (1, 1), (4, 4))
     im.save(out_fn)
-    
