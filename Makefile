@@ -5,25 +5,49 @@ FONT_TO_PY_DIR = ../micropython-font-to-py
 FONT_TO_PY = .venv/bin/python $(FONT_TO_PY_DIR)/font_to_py.py --iterate
 
 
-varfont_sizes += 10
-varfont_sizes += 12
-varfont_sizes += 16
-varfont_sizes += 20
-varfont_sizes += 24
-varfont_sizes += 32
-varfont_sizes += 40
+scalable_font_sizes += 10
+scalable_font_sizes += 12
+scalable_font_sizes += 16
+scalable_font_sizes += 20
+scalable_font_sizes += 24
+scalable_font_sizes += 32
+scalable_font_sizes += 40
 
-varfonts += DejaVuSans
-varfonts += DejaVuSans_Bold
-varfonts += Tahoma
-varfonts += Tahoma_Bold
-varfonts += Verdana
-varfonts += Verdana_Bold
+scalable_fonts += DejaVuSans
+scalable_fonts += DejaVuSans_Bold
+scalable_fonts += Inter
+scalable_fonts += Inter_Bold
+scalable_fonts += Montserrat
+scalable_fonts += Montserrat_Bold
+scalable_fonts += Segoe_UI
+scalable_fonts += Segoe_UI_Bold
+scalable_fonts += Tahoma
+scalable_fonts += Tahoma_Bold
+scalable_fonts += Verdana
+scalable_fonts += Verdana_Bold
 
-all_varfonts = $(foreach font,$(varfonts),$(foreach size,$(varfont_sizes),$(font)_$(size)))
-all_var_pyfont_files = $(foreach font,$(all_varfonts),$(PYFONT_DIR)/$(font).py)
+all_scalable_fonts = $(foreach font,$(scalable_fonts),$(foreach size,$(scalable_font_sizes),$(font)_$(size)))
+all_scalable_pyfont_files = $(foreach font,$(all_scalable_fonts),$(PYFONT_DIR)/$(font).py)
 
-all_pyfont_files += $(all_var_pyfont_files) $(all_fixed_pyfont_files)
+
+bitmap_fonts += helvB08
+bitmap_fonts += helvR08
+bitmap_fonts += helvB10
+bitmap_fonts += helvR10
+bitmap_fonts += helvB12
+bitmap_fonts += helvR12
+bitmap_fonts += helvB14
+bitmap_fonts += helvR14
+bitmap_fonts += helvB18
+bitmap_fonts += helvR18
+bitmap_fonts += helvB24
+bitmap_fonts += helvR24
+
+
+all_bitmap_fonts = $(foreach font,$(bitmap_fonts),$(foreach dpi,75 100,$(font)_$(dpi)dpi))
+all_bitmap_pyfont_files = $(foreach font,$(all_bitmap_fonts),$(PYFONT_DIR)/$(font).py)
+
+all_pyfont_files += $(all_scalable_pyfont_files) $(all_bitmap_pyfont_files)
 all_pyfont_examples = $(foreach pyfont,$(all_pyfont_files),$(patsubst $(PYFONT_DIR)/%.py,$(EXAMPLE_DIR)/%-example.png,$(pyfont)))
 
 pyfont-examples:
@@ -40,6 +64,9 @@ pyfont-examples: venvpy $(all_pyfont_examples)
 .py: .ttf
 	mkdir -p $(PYFONT_DIR)
 
+.py: .bdf
+	mkdir -p $(PYFONT_DIR)
+	
 .png: .py
 	mkdir -p $(EXAMPLE_DIR)
 
@@ -50,11 +77,28 @@ $(PYFONT_DIR)/DejaVuSans_%.py: fonts/ttf/DejaVuSans.ttf charsets/iso-8859-15+spe
 $(PYFONT_DIR)/DejaVuSans_Bold_%.py: fonts/ttf/DejaVuSans-Bold.ttf charsets/iso-8859-15+specials.charset
 	$(FONT_TO_PY) -k $(filter %.charset,$^) $< $(patsubst $(PYFONT_DIR)/DejaVuSans_Bold_%.py,%,$@) $@
 
+$(PYFONT_DIR)/Inter_%.py: fonts/ttf/Inter-Regular.ttf charsets/iso-8859-15+specials.charset
+	$(FONT_TO_PY) -k $(filter %.charset,$^) $< $(patsubst $(PYFONT_DIR)/Inter_%.py,%,$@) $@
+
+$(PYFONT_DIR)/Inter_Bold_%.py: fonts/ttf/Inter-Bold.ttf charsets/iso-8859-15+specials.charset
+	$(FONT_TO_PY) -k $(filter %.charset,$^) $< $(patsubst $(PYFONT_DIR)/Inter_Bold_%.py,%,$@) $@
+
+$(PYFONT_DIR)/Montserrat_%.py: fonts/ttf/Montserrat-Regular.ttf charsets/iso-8859-15+specials.charset
+	$(FONT_TO_PY) -k $(filter %.charset,$^) $< $(patsubst $(PYFONT_DIR)/Montserrat_%.py,%,$@) $@
+
+$(PYFONT_DIR)/Montserrat_Bold_%.py: fonts/ttf/Montserrat-Bold.ttf charsets/iso-8859-15+specials.charset
+	$(FONT_TO_PY) -k $(filter %.charset,$^) $< $(patsubst $(PYFONT_DIR)/Montserrat_Bold_%.py,%,$@) $@
+
+$(PYFONT_DIR)/Segoe_UI_%.py: fonts/ttf/Segoe_UI.ttf charsets/iso-8859-15+specials.charset
+	$(FONT_TO_PY) -k $(filter %.charset,$^) $< $(patsubst $(PYFONT_DIR)/Segoe_UI_%.py,%,$@) $@
+
+$(PYFONT_DIR)/Segoe_UI_Bold_%.py: fonts/ttf/Segoe_UI_Bold.ttf charsets/iso-8859-15+specials.charset
+	$(FONT_TO_PY) -k $(filter %.charset,$^) $< $(patsubst $(PYFONT_DIR)/Segoe_UI_Bold_%.py,%,$@) $@
+
 $(PYFONT_DIR)/Tahoma_%.py: fonts/ttf/Tahoma.ttf charsets/iso-8859-15+specials.charset
 	$(FONT_TO_PY) -k $(filter %.charset,$^) $< $(patsubst $(PYFONT_DIR)/Tahoma_%.py,%,$@) $@
 
 $(PYFONT_DIR)/Tahoma_Bold_%.py: fonts/ttf/Tahoma_Bold.ttf charsets/iso-8859-15+specials.charset
-	echo here
 	$(FONT_TO_PY) -k $(filter %.charset,$^) $< $(patsubst $(PYFONT_DIR)/Tahoma_Bold_%.py,%,$@) $@
 
 $(PYFONT_DIR)/Verdana_%.py: fonts/ttf/Verdana.ttf charsets/iso-8859-15+specials.charset
@@ -64,8 +108,24 @@ $(PYFONT_DIR)/Verdana_Bold_%.py: fonts/ttf/Verdana_Bold.ttf charsets/iso-8859-15
 	$(FONT_TO_PY) -k $(filter %.charset,$^) $< $(patsubst $(PYFONT_DIR)/Verdana_Bold_%.py,%,$@) $@
 
 
+
+$(PYFONT_DIR)/helvB08_75dpi.py: fonts/bdf/75dpi/helvB08.bdf charsets/iso-8859-15+specials.charset
+	$(FONT_TO_PY) -k $(filter %.charset,$^) $< 100 $@
+	
+$(PYFONT_DIR)/helvB08_100dpi.py: fonts/bdf/100dpi/helvB08.bdf charsets/iso-8859-15+specials.charset
+	$(FONT_TO_PY) -k $(filter %.charset,$^) $< 100 $@
+
+$(PYFONT_DIR)/helvR08_75dpi.py: fonts/bdf/75dpi/helvR08.bdf charsets/iso-8859-15+specials.charset
+	$(FONT_TO_PY) -k $(filter %.charset,$^) $< 100 $@
+
+$(PYFONT_DIR)/helvR08_100dpi.py: fonts/bdf/100dpi/helvR08.bdf charsets/iso-8859-15+specials.charset
+	$(FONT_TO_PY) -k $(filter %.charset,$^) $< 100 $@
+
+
+
 $(EXAMPLE_DIR)/%-example.png: $(PYFONT_DIR)/%.py create-font-sample.py
 	.venv/bin/python create-font-sample.py $< $@
+
 
 clean:
 	-rm -rf $(PYFONT_DIR)/*
