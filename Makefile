@@ -30,18 +30,35 @@ all_scalable_fonts = $(foreach font,$(scalable_fonts),$(foreach size,$(scalable_
 all_scalable_pyfont_files = $(foreach font,$(all_scalable_fonts),$(PYFONT_DIR)/$(font).py)
 
 
-bitmap_fonts += helvB08
 bitmap_fonts += helvR08
-bitmap_fonts += helvB10
 bitmap_fonts += helvR10
-bitmap_fonts += helvB12
 bitmap_fonts += helvR12
-bitmap_fonts += helvB14
 bitmap_fonts += helvR14
-bitmap_fonts += helvB18
 bitmap_fonts += helvR18
-bitmap_fonts += helvB24
 bitmap_fonts += helvR24
+
+bitmap_fonts += helvB08
+bitmap_fonts += helvB10
+bitmap_fonts += helvB12
+bitmap_fonts += helvB14
+bitmap_fonts += helvB18
+bitmap_fonts += helvB24
+
+bitmap_fonts += luRS08
+bitmap_fonts += luRS10
+bitmap_fonts += luRS12
+bitmap_fonts += luRS14
+bitmap_fonts += luRS18
+bitmap_fonts += luRS19
+bitmap_fonts += luRS24
+
+bitmap_fonts += luBS08
+bitmap_fonts += luBS10
+bitmap_fonts += luBS12
+bitmap_fonts += luBS14
+bitmap_fonts += luBS18
+bitmap_fonts += luBS19
+bitmap_fonts += luBS24
 
 
 all_bitmap_fonts = $(foreach font,$(bitmap_fonts),$(foreach dpi,75 100,$(font)_$(dpi)dpi))
@@ -64,9 +81,15 @@ pyfont-examples: venvpy $(all_pyfont_examples)
 .py: .ttf
 	mkdir -p $(PYFONT_DIR)
 
-.py: .bdf
+$(PYFONT_DIR)/%_75dpi.py: fonts/bdf/75dpi/%.bdf charsets/iso-8859-15+specials.charset
 	mkdir -p $(PYFONT_DIR)
-	
+	$(FONT_TO_PY) -k $(filter %.charset,$^) $< 100 $@
+
+$(PYFONT_DIR)/%_100dpi.py: fonts/bdf/100dpi/%.bdf charsets/iso-8859-15+specials.charset
+	mkdir -p $(PYFONT_DIR)
+	$(FONT_TO_PY) -k $(filter %.charset,$^) $< 100 $@
+
+
 .png: .py
 	mkdir -p $(EXAMPLE_DIR)
 
@@ -106,20 +129,6 @@ $(PYFONT_DIR)/Verdana_%.py: fonts/ttf/Verdana.ttf charsets/iso-8859-15+specials.
 
 $(PYFONT_DIR)/Verdana_Bold_%.py: fonts/ttf/Verdana_Bold.ttf charsets/iso-8859-15+specials.charset
 	$(FONT_TO_PY) -k $(filter %.charset,$^) $< $(patsubst $(PYFONT_DIR)/Verdana_Bold_%.py,%,$@) $@
-
-
-
-$(PYFONT_DIR)/helvB08_75dpi.py: fonts/bdf/75dpi/helvB08.bdf charsets/iso-8859-15+specials.charset
-	$(FONT_TO_PY) -k $(filter %.charset,$^) $< 100 $@
-	
-$(PYFONT_DIR)/helvB08_100dpi.py: fonts/bdf/100dpi/helvB08.bdf charsets/iso-8859-15+specials.charset
-	$(FONT_TO_PY) -k $(filter %.charset,$^) $< 100 $@
-
-$(PYFONT_DIR)/helvR08_75dpi.py: fonts/bdf/75dpi/helvR08.bdf charsets/iso-8859-15+specials.charset
-	$(FONT_TO_PY) -k $(filter %.charset,$^) $< 100 $@
-
-$(PYFONT_DIR)/helvR08_100dpi.py: fonts/bdf/100dpi/helvR08.bdf charsets/iso-8859-15+specials.charset
-	$(FONT_TO_PY) -k $(filter %.charset,$^) $< 100 $@
 
 
 
