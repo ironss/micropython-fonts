@@ -46,6 +46,42 @@ Font sources
 * Adobe proportional X11 bitmap fonts   https://www.cl.cam.ac.uk/~mgk25/download/ucs-fonts-75dpi100dpi.tar.gz
 * X11 monospaced bitmap fonts           https://www.cl.cam.ac.uk/~mgk25/download/ucs-fonts.tar.gz
 
+Fonts to try
+============
+
+* Helvetica
+* Verdana
+* Tahoma
+* Lucida Sans
+* Calibri
+* MS Sans Serif
+
+* Segoe UI
+* Inter UI
+
+* Charter
+* Fourier
+* Lucida Bright
+
+* Myriad condensed
+* Workplace Sans
+* PT Sans Narrow
+
+* Unscii
+* Montserrat
+
+
+Icon fonts
+==========
+
+* Fontawesome
+* Climacons
+* EF WeatherIcons
+* Iconvault Forecast Font
+* Meteocons
+* PE Icon Set Weather
+* Typicons
+
 
 Charsets
 ========
@@ -75,3 +111,39 @@ Some subsets are
 * PalmOS
 * IBM PC, including the low-range characters 01--1F.
 * PETSCII
+
+
+X11 Adobe font sizes
+====================
+
+Name     dpi  req  asc desc
+
+helvR08   75   10    9    2
+helvR10   75   12   11    2
+helvR12   75   14   12    3
+helvR14   75   16   14    3
+helvR18   75   21   18    4
+helvR24   75   27   24    5
+
+helvR08  100   12   11    2
+helvR10  100   16   14    3
+helvR12  100   18   16    4
+helvR14  100   20   18    4
+helvR18  100   27   24    5
+helvR24  100   35   31    7
+
+luRS08    75    9    8    2
+luRS10    75   11    9    2
+luRS12    75   13   11    2
+luRS14    75   15   13    2
+luRS18    75   19   16    3
+luRS19    75   21   18    4
+luRS24    75   27   22    5
+
+luRS08   100   13   10    2
+luRS10   100   16   13    3
+luRS12   100   19   16    3
+luRS14   100   23   18    4
+luRS18   100   29   23    5
+luRS19   100   30   24    5
+luRS24   100   39   32    7
