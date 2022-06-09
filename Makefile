@@ -63,6 +63,8 @@ bitmap_fonts += luBS24
 #charset = charsets/standard/secs.charset
 #charset = charsets/standard/ascii.charset
 charset = charsets/custom/iso-8859-15+specials.charset
+#charset = charsets/standard/cp437.charset
+
 
 all_bitmap_fonts = $(foreach font,$(bitmap_fonts),$(foreach dpi,75 100,$(font)_$(dpi)dpi))
 all_bitmap_pyfont_files = $(foreach font,$(all_bitmap_fonts),$(PYFONT_DIR)/$(font).py)
