@@ -47,4 +47,31 @@ Font sources
 * X11 monospaced bitmap fonts           https://www.cl.cam.ac.uk/~mgk25/download/ucs-fonts.tar.gz
 
 
+Charsets
+========
 
+Assume that it is not reasonable to include the whole set of Unicode characters
+as bitmap fonts. So we need to choose a suitable subset. This will be based on
+
+* the characters that the target application needs to display
+* the characters that are available in the font file
+
+During the pre-Unicode era, fonts were restricted to 256 characters. Various 
+companies and standards bodies created sets of characters suitable for
+different languages, applications, etc.
+
+In addition, various people and standards bodies have created subsets of
+characters suitable for different applications.
+
+These subsets contain a few hundred to a few thousand characters.
+
+Some subsets are
+
+* ASCII
+* ISO-8895-x series, for different European regions
+* MAC Roman, Greek and Cyrillic sets
+* MES-1, MES-2, MES-3 and MES-4, a number of Multilingual European Subsets
+* SECS and VSECS by Marcus Kuhn
+* PalmOS
+* IBM PC 
+* PETSCII
