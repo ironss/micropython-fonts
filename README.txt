@@ -73,5 +73,5 @@ Some subsets are
 * MES-1, MES-2, MES-3 and MES-4, a number of Multilingual European Subsets
 * SECS and VSECS by Marcus Kuhn
 * PalmOS
-* IBM PC 
+* IBM PC, including the low-range characters 01--1F.
 * PETSCII
